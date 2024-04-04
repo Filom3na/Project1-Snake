@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snake</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="game-container">
+    <div id="game-header">
+      <h1>Snake</h1>
+      <div class="scoreDisplay">
+        <p class="score">Score: <span class="amount">0</span></p>
+        <p class="time-left">Time Left: <span class="remaining">60</span>s</p>
+      </div>
+      <button id="mute-btn">🔊</button>
+    </div>
+    <div id="game-board" class="grid"></div>
+    <div id="controls" class="button">
+      <div class="arrow-keys">
+        <button class="arrow-key top">▲</button>
+        <button class="arrow-key left">◀</button>
+        <button class="arrow-key bottom">▼</button>
+        <button class="arrow-key right">▶</button>
+      </div>
+      <button id="pause-btn">Pause</button>
+      <button id="start-game-btn">Start Game</button>
+    </div>
+  </div>
+  <div id="game-over-screen" class="popup hidden">
+    <h2>Game Over</h2>
+    <p class="final-score">Your Final Score: <span class="amount">0</span></p>
+    <button id="restart-game-btn" class="playAgain">Restart Game</button>
+  </div>
+  <script src="js/app.js"></script>
+</body>
+</html>
