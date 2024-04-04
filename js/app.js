@@ -17,6 +17,7 @@ let startButton = document.querySelector("#start-game-btn");
 let restartButton = document.querySelector("#restart-game-btn");
 let gameOverScreen = document.querySelector("#game-over-screen");
 let pauseButton = document.querySelector("#pause-btn");
+let timeDisplay = document.querySelector(".time-left .remaining");
 let squares = [];
 let currentSnake = [2, 1, 0];
 let direction = 1;
@@ -26,6 +27,9 @@ let score = 0;
 let intervalTime = 1000;
 let speed = 0.9;
 let timerId = 0;
+let timeLeft = 60;
+let timerIntervalId = 0;
+
 
 
 
@@ -104,15 +108,19 @@ function startGame() {
   currentSnake.forEach((index) => squares[index].classList.remove("snake"));
   squares[appleIndex].classList.remove("apple");
   clearInterval(timerId);
+  clearInterval(timerIntervalId);
   currentSnake = [2, 1, 0];
   score = 0;
   direction = 1;
   intervalTime = 1000;
+  timeLeft = 60;
   generateApple();
   currentSnake.forEach((index) => squares[index].classList.add("snake"));
   scoreDisplay.textContent = score;
+  timeDisplay.textContent = timeLeft;
   gameOverScreen.classList.add("hidden");
   timerId = setInterval(move, intervalTime);
+  timerIntervalId = setInterval(updateTimer, 1000);
 }
 
 function move() {
@@ -167,23 +175,36 @@ function control(event) {
   }
 }
 
+function updateTimer() {
+  timeLeft--;
+  timeDisplay.textContent = timeLeft;
+  if (timeLeft <= 0) {
+    gameOver();
+  }
+}
+
 function pauseGame() {
   if (timerId) {
     clearInterval(timerId);
+    clearInterval(timerIntervalId);
     timerId = null;
+    timerIntervalId = null;
     pauseButton.textContent = "Resume";
   } else {
     timerId = setInterval(move, intervalTime);
+    timerIntervalId = setInterval(updateTimer, 1000);
     pauseButton.textContent = "Pause";
   }
 }
 
+
+
 function gameOver() {
   clearInterval(timerId);
+  clearInterval(timerIntervalId);
   gameOverScreen.classList.remove("hidden");
   gameOverScreen.querySelector(".final-score .amount").textContent = score;
 }
-
 
 
 function replay() {
