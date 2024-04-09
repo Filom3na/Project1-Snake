@@ -27,12 +27,42 @@ let score = 0;
 let intervalTime = 1000;
 let speed = 0.9;
 let timerId = 0;
-let timeLeft = 60;
+let timeLeft = 120;
 let timerIntervalId = 0;
+let backgroundMusic;
+let eatSound;
+let gameOverSound;
+let isMuted = false;
 
+function loadAudioFiles() {
+  backgroundMusic = new Audio('audio/background.wav');
+  backgroundMusic.loop = true;
+  eatSound = new Audio("audio/eating.mp3");
+  gameOverSound = new Audio("audio/gameover.wav");
+}
 
+function playBackgroundMusic() {
+  if (!isMuted) {
+    backgroundMusic.play();
+  }
+}
 
+function playSound(sound) {
+  if (!isMuted) {
+    sound.play();
+  }
+}
 
+function muteGame() {
+  isMuted = !isMuted;
+  if (isMuted) {
+    backgroundMusic.pause();
+    document.querySelector("#mute-btn").textContent = "🔇";
+  } else {
+    backgroundMusic.play();
+    document.querySelector("#mute-btn").textContent = "🔊";
+  }
+}
 
 //? Variables
 // snake (array to store snake's body positions)-> x and y coordinates
@@ -62,6 +92,7 @@ let timerIntervalId = 0;
 // Call loadAudioFiles() to load background music and sound effects
 // Call showSidePanel() to show the side panel with rules and instructions (for desktop)
 document.addEventListener("DOMContentLoaded", function () {
+  loadAudioFiles();
   document.addEventListener("keyup", control);
   createBoard();
   let restartButton = document.querySelector("#restart-game-btn");
@@ -106,6 +137,7 @@ function createBoard() {
 
 function startGame() {
   currentSnake.forEach((index) => squares[index].classList.remove("snake"));
+  currentSnake.forEach(index => squares[index].classList.remove("snake-gameover"));
   squares[appleIndex].classList.remove("apple");
   clearInterval(timerId);
   clearInterval(timerIntervalId);
@@ -113,8 +145,9 @@ function startGame() {
   score = 0;
   direction = 1;
   intervalTime = 1000;
-  timeLeft = 60;
+  timeLeft = 120;
   generateApple();
+  playBackgroundMusic();
   currentSnake.forEach((index) => squares[index].classList.add("snake"));
   scoreDisplay.textContent = score;
   timeDisplay.textContent = timeLeft;
@@ -154,6 +187,14 @@ function eatApple() {
   clearInterval(timerId);
   intervalTime = intervalTime * speed;
   timerId = setInterval(move, intervalTime);
+
+  currentSnake.forEach(index => squares[index].classList.add("snake-eat"));
+
+  setTimeout(() => {
+    currentSnake.forEach(index => squares[index].classList.remove("snake-eat"));
+  }, 300);
+
+  playSound(eatSound);
 }
 
 function generateApple() {
@@ -197,13 +238,15 @@ function pauseGame() {
   }
 }
 
-
-
 function gameOver() {
   clearInterval(timerId);
   clearInterval(timerIntervalId);
+  currentSnake.forEach(index => squares[index].classList.add("snake-gameover"));
+
   gameOverScreen.classList.remove("hidden");
   gameOverScreen.querySelector(".final-score .amount").textContent = score;
+  
+  playSound(gameOverSound);
 }
 
 
@@ -212,7 +255,23 @@ function replay() {
   startGame();
 }
 
+const showInstructionsBtn = document.getElementById('show-instructions-btn');
+const sidePanel = document.getElementById('side-panel');
+const closeInstructionsBtn = document.getElementById('close-instructions-btn');
 
+showInstructionsBtn.addEventListener('click', () => {
+  sidePanel.classList.remove('hidden');
+});
+
+closeInstructionsBtn.addEventListener('click', () => {
+  sidePanel.classList.add('hidden');
+});
+
+window.addEventListener('click', (e) => {
+  if (e.target !== sidePanel && !sidePanel.contains(e.target) && e.target !== showInstructionsBtn) {
+    sidePanel.classList.add('hidden');
+  }
+});
 //? Events
 // On arrow key press (for PC) or mobile controls (for mobile devices):
 //   Call changeDirection() to update the snake's direction
@@ -239,4 +298,5 @@ document.querySelector(".arrow-key.top").addEventListener("click", () => directi
 document.querySelector(".arrow-key.bottom").addEventListener("click", () => direction = +width);
 document.querySelector(".arrow-key.left").addEventListener("click", () => direction = -1);
 document.querySelector(".arrow-key.right").addEventListener("click", () => direction = 1);
+document.querySelector("#mute-btn").addEventListener("click", muteGame);
 

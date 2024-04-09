@@ -8,13 +8,23 @@
 </head>
 <body>
   <div id="game-container">
+    <div id="side-panel" class="hidden">
+      <h2>How to Play</h2>
+      <button id="close-instructions-btn">Close</button>
+      <p>Use the arrow keys or on-screen controls to move the snake.</p>
+      <p>Eat the apples to grow longer and score points.</p>
+      <p>Avoid hitting the walls or your own body.</p>
+      <p>The game ends when you collide with a wall or your own body.</p>
+      <p>Beat your high score and enjoy the jungle adventure!</p>
+    </div>
     <div id="game-header">
-      <h1>Snake</h1>
+      <h1>JUNGLE SNAKE</h1>
       <div class="scoreDisplay">
         <p class="score">Score: <span class="amount">0</span></p>
-        <p class="time-left">Time Left: <span class="remaining">60</span>s</p>
+        <p class="time-left">Time Left: <span class="remaining">120</span>s</p>
       </div>
       <button id="mute-btn">🔊</button>
+      <button id="show-instructions-btn">Instructions</button>
     </div>
     <div id="game-board" class="grid"></div>
     <div id="controls" class="button">
