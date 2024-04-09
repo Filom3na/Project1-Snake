@@ -3,7 +3,7 @@
 This project was completed during the early stages of the course, focusing on building a classic Snake game using HTML, CSS, and JavaScript. It served as an opportunity to practice DOM manipulation, event handling, and game logic implementation.
 
 <h3>Deployment Link</h3>
-The deployed version of the Snake Game can be accessed at: ///
+The deployed version of the Snake Game can be accessed at: https://filom3na.github.io/Project1-Snake/
 
 <h3> Getting Started/Code Installation</h3>
 To run the Snake Game locally, follow these steps:
